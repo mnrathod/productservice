@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Identify YourSelf</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+<script>
+
+function sendJSON(data, url, targetElement){
+	
+	// Creating a XHR object
+	let xhr = new XMLHttpRequest();
+	
+	// open a connection
+	xhr.open("POST", url, true);
+
+	// Set the request header i.e. which type of content you are sending
+	xhr.setRequestHeader("Content-Type", "application/json");
+
+	// Create a state change callback
+	xhr.onreadystatechange = function () {
+		if (xhr.readyState === 4 && xhr.status === 200) {
+
+			// Print received data from server
+			targetElement.innerHTML = this.responseText;
+
+		}
+	};
+
+	// Sending data with the request
+	xhr.send(data);
+}
+
+
+function addCustomer(){
+			
+			let name = document.querySelector('#name');
+			let mobile = document.querySelector('#mobile');
+			let email = document.querySelector('#email');
+			let city = document.querySelector('#city');
+
+			// Converting JSON data to string
+			var data = JSON.stringify({ "name" : name.value, "mobile": mobile.value, "email": email.value, "city": city.value });
+			let url = "/customer/add";
+			
+			sendJSON(data, url, result);
+		
+		}
+
+
+
+function authenticate(){
+	
+	let mobile = document.querySelector('#mobile');
+
+	// Converting JSON data to string
+	var data = JSON.stringify({ "mobile": mobile.value });
+	let url = "/authenticate";
+	
+	sendJSON(data, url, result);
+
+}
+
+
+	
+</script>
+</head>
+
+<body>
+
+<div id="result">
+ <form action="/authenticate" method="post">
+    
+  <div class="form-group">
+    <label for="mobile">Enter your Registered Mobile Number</label>
+    <input type="number" class="form-control" id="mobile">
+  </div>
+
+  <div class="checkbox">
+    <label><input type="checkbox"> I hereby agree to Consent Terms & Conditions</label>
+  </div>
+  
+  <div class="form-group">
+    <label for="mobile">We will be sending you an OTP to this number.</label>
+  </div>
+  <div class="form-group">	
+  <button type="button" class="btn btn-primary" onclick="authenticate()">Get OTP</button>
+  </div>
+</form>
+</div>
+
+</body>
+</html>
